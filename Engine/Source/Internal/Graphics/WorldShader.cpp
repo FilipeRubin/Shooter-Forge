@@ -19,6 +19,7 @@ GLuint WorldShader::s_uboMaterial = 0U;
 WorldShader::WorldShader() :
 	pCamera(nullptr),
 	pDirectionalLight(nullptr),
+	m_uCameraPosition(0),
 	m_uProjView(0),
 	m_uModel(0)
 {
@@ -62,7 +63,9 @@ void WorldShader::Load(const char* vertexShaderSource, const char* fragmentShade
 	// Texture unit set
 	glUseProgram(m_program);
 	glUniform1i(glGetUniformLocation(m_program, "u_textures.diffuse"), 0);
+	glUniform1i(glGetUniformLocation(m_program, "u_textures.specular"), 1);
 
+	m_uCameraPosition = glGetUniformLocation(m_program, "u_cameraPosition");
 	m_uProjView = glGetUniformLocation(m_program, "u_projView");
 	m_uModel = glGetUniformLocation(m_program, "u_model");
 }
@@ -70,6 +73,7 @@ void WorldShader::Load(const char* vertexShaderSource, const char* fragmentShade
 void WorldShader::Use()
 {
 	glUseProgram(m_program);
+
 
 	// Checks which directional light (dl) it should use, and then compare it to the one from the previous frame to see whether it should be updated or not
 	DirectionalLight& dl = pDirectionalLight == nullptr ? *DirectionalLight::pCurrentDirectionalLight : *pDirectionalLight;
@@ -81,6 +85,10 @@ void WorldShader::Use()
 	glm::mat4 proj = glm::perspective(glm::radians(cam.fov), cam.aspect, cam.near, cam.far);
 	glm::mat4 view = TransformUtilities::GenViewHierarchyMatrix(cam.transform);
 	glm::mat4 projView = proj * view;
+
+	// Update camera position
+	glm::vec3 camPos = glm::vec3(TransformUtilities::GenWorldHierarchyMatrix(cam.transform)[3]);
+	glUniform3f(m_uCameraPosition, camPos.x, camPos.y, camPos.z);
 
 	glUniformMatrix4fv(m_uProjView, 1, GL_FALSE, &projView[0][0]);
 }
@@ -94,12 +102,19 @@ void WorldShader::SetModel(const Utilities::Transform& modelTransform)
 
 void WorldShader::SetMaterial(const Material& material)
 {
-	GLint enableDiffuse = material.IsDiffuseEnabled();
-	glm::vec3 diffuseColor = glm::vec3(material.diffuseColor.x, material.diffuseColor.y, material.diffuseColor.z);
-	
+	const GLint enableDiffuse = material.IsDiffuseTextureEnabled();
+	const GLint enableSpecular = material.IsSpecularTextureEnabled();
+	//glm::vec3 diffuseColor = glm::vec3(material.diffuseColor.x, material.diffuseColor.y, material.diffuseColor.z);
+	//glm::vec3 specularColor = glm::vec3(material.diffuseColor)
+
+	const Vector3& diffuseColor = material.diffuseColor;
+	const Vector3& specularColor = material.specularColor;
+
 	glBindBuffer(GL_UNIFORM_BUFFER, s_uboMaterial);
-	glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(GLint), &enableDiffuse);
+	glBufferSubData(GL_UNIFORM_BUFFER,  0,  4U, &enableDiffuse);
+	glBufferSubData(GL_UNIFORM_BUFFER,  4,  4U, &enableSpecular);
 	glBufferSubData(GL_UNIFORM_BUFFER, 16, 12U, &diffuseColor);
+	glBufferSubData(GL_UNIFORM_BUFFER, 32, 12U, &specularColor);
 	if (enableDiffuse)
 	{
 		material.UseTextures();
@@ -120,7 +135,7 @@ void WorldShader::InitUniformBuffers()
 
 	glGenBuffers(1, &s_uboMaterial);
 	glBindBuffer(GL_UNIFORM_BUFFER, s_uboMaterial);
-	glBufferData(GL_UNIFORM_BUFFER, 32U, nullptr, GL_STATIC_DRAW);
+	glBufferData(GL_UNIFORM_BUFFER, 48U, nullptr, GL_STATIC_DRAW);
 	glBindBufferBase(GL_UNIFORM_BUFFER, 1U, s_uboMaterial);
 }
 

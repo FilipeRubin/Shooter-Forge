@@ -100,6 +100,13 @@ void Texture::Load(const char* filepath)
 	stbi_image_free(data);
 }
 
+void Texture::SetFilter(bool value) const
+{
+	Use();
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, value ? GL_LINEAR : GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, value ? GL_LINEAR : GL_NEAREST);
+}
+
 void Texture::Use() const
 {
 	glBindTexture(GL_TEXTURE_2D, *m_pId);

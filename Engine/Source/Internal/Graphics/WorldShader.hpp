@@ -30,6 +30,7 @@ namespace Engine::Graphics
 		static void InitUniformBuffers();
 		static void CleanupUniformBuffers();
 	private: // Private non-static
+		GLint m_uCameraPosition;
 		GLint m_uProjView;
 		GLint m_uModel;
 		DirectionalLight m_lastDirLight; // Used for comparations only

@@ -17,6 +17,7 @@ namespace Engine::Graphics
 		Texture& operator=(Texture&& other) noexcept;
 		~Texture();
 		void Load(const char* filepath);
+		void SetFilter(bool value) const;
 	private:
 		unsigned int* m_pRefCount;
 		unsigned int* m_pId; // Texture ID stored into the GPU

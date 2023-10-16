@@ -10,8 +10,11 @@ namespace Engine::Graphics
 	public:
 		Utilities::Vector3 diffuseColor;
 		Texture            diffuseTexture;
+		Utilities::Vector3 specularColor;
+		Texture            specularTexture;
 		Material();
-		bool IsDiffuseEnabled() const;
+		bool IsDiffuseTextureEnabled() const;
+		bool IsSpecularTextureEnabled() const;
 	private:
 		void UseTextures() const;
 	};

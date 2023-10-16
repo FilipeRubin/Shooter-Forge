@@ -43,6 +43,8 @@ in vec2 v_out_uv;
 
 out vec4 f_color;
 
+uniform vec3 u_cameraPosition;
+
 layout(std140) uniform ubo_directionalLight
 {
 	vec3 u_directionalAmbient;
@@ -53,26 +55,48 @@ layout(std140) uniform ubo_directionalLight
 layout(std140) uniform ubo_material
 {
 	bool u_diffuseEnabled;
+	bool u_specularEnabled;
 	vec3 u_diffuseColor;
+	vec3 u_specularColor;
 };
 
 uniform struct Textures
 {
 	sampler2D diffuse;
+	sampler2D specular;
 } u_textures;
+
+vec3 CalculateSpecular(vec3 specularColor)
+{
+	vec3 viewDirection = normalize(u_cameraPosition - v_out_pos);
+	vec3 reflectDirection = reflect(-u_directionalDirection, v_out_nor);
+	float specularAmount = pow(max(dot(viewDirection, reflectDirection), 0.0), 8);
+	vec3 specularFrag = specularColor * specularAmount / 2.0;
+	return specularFrag;
+}
 
 void main()
 {
+	// Diffuse fragment
+	vec3 diffuseFrag;
+	if (u_diffuseEnabled)
+		diffuseFrag = texture(u_textures.diffuse, v_out_uv).rgb * u_diffuseColor;
+	else
+		diffuseFrag = u_diffuseColor;
+
 	// Unshaded color
 	vec3 frag;
-	if (u_diffuseEnabled)
-		frag = texture(u_textures.diffuse, v_out_uv).rgb * u_diffuseColor;
-	else
-		frag = u_diffuseColor;
 
-	// Ambient and diffuse
-	vec3 lightAmount = max(0.0, dot(u_directionalDirection, v_out_nor)) * u_directionalColor;
-	frag *= u_directionalAmbient + lightAmount;
+	// Ambient
+	frag = u_directionalAmbient * diffuseFrag;
+
+	// Diffuse lighting
+	frag += max(0.0, dot(u_directionalDirection, v_out_nor)) * u_directionalColor * diffuseFrag;
+
+	if (u_specularEnabled)
+		frag += CalculateSpecular(texture(u_textures.specular, v_out_uv).rgb * u_specularColor);
+	else
+		frag += CalculateSpecular(u_specularColor);
 
 	// Final
 	f_color = vec4(frag, 1.0);

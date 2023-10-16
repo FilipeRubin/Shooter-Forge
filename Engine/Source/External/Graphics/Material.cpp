@@ -5,19 +5,24 @@ using namespace Engine::Graphics;
 using namespace Engine::Utilities;
 
 Material::Material()
-	:diffuseColor(Vector3(1.0f, 1.0f, 1.0f))
+	:diffuseColor(Vector3(1.0f, 1.0f, 1.0f)), specularColor(Vector3(1.0f, 1.0f, 1.0f))
 {
 }
 
-bool Material::IsDiffuseEnabled() const
+bool Material::IsDiffuseTextureEnabled() const
 {
 	return diffuseTexture.m_pId != nullptr and *diffuseTexture.m_pId != 0U;
+}
+
+bool Material::IsSpecularTextureEnabled() const
+{
+	return specularTexture.m_pId != nullptr and *specularTexture.m_pId != 0U;
 }
 
 void Material::UseTextures() const
 {
 	glActiveTexture(GL_TEXTURE0);
 	diffuseTexture.Use();
-	//glActiveTexture(GL_TEXTURE1);
-	//specularTexture.Use();
+	glActiveTexture(GL_TEXTURE1);
+	specularTexture.Use();
 }
