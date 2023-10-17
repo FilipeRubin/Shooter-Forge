@@ -7,10 +7,12 @@ namespace Engine::Utilities
 		float x, y, z;
 
 		Vector3(float _x = 0.0f, float _y = 0.0f, float _z = 0.0f);
-		float Length() const;
+		Vector3 Cross(const Vector3& other) const;
+		float Dot(const Vector3& other) const;
+		float Magnitude() const;
 		Vector3 Lerp(Vector3 to, float weight) const;
 		void Normalize();
-		Vector3 Normalized();
+		Vector3 Normalized() const;
 
 		// Operators
 		bool operator==(const Vector3& other);

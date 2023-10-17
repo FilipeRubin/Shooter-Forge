@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="Source\External\Gameplay\Player.cpp" />
     <ClCompile Include="Source\External\Graphics\DirectionalLight.cpp" />
+    <ClCompile Include="Source\External\Physics\Collider.cpp" />
     <ClCompile Include="Source\Internal\Graphics\ShaderLoader.cpp" />
     <ClCompile Include="Source\External\Graphics\Material.cpp" />
     <ClCompile Include="Source\External\Graphics\Mesh.cpp" />
@@ -30,6 +31,7 @@
     <ClCompile Include="Source\Internal\Graphics\MeshList.cpp" />
     <ClCompile Include="Source\Internal\Graphics\ShaderBase.cpp" />
     <ClCompile Include="Source\Internal\Graphics\WorldShader.cpp" />
+    <ClCompile Include="Source\Internal\Physics\Simplex.cpp" />
     <ClCompile Include="Source\Internal\Utilities\TransformUtilities.cpp" />
     <ClInclude Include="Source\External\Gameplay\PlayerBase.hpp" />
     <ClInclude Include="Source\External\Graphics\Camera.hpp" />
@@ -38,6 +40,7 @@
     <ClInclude Include="Source\External\Graphics\Mesh.hpp" />
     <ClInclude Include="Source\External\Graphics\Texture.hpp" />
     <ClInclude Include="Source\External\Input\Keyboard.hpp" />
+    <ClInclude Include="Source\External\Physics\Collider.hpp" />
     <ClInclude Include="Source\Internal\Graphics\ShaderLoader.hpp" />
     <ClInclude Include="Source\Internal\Graphics\CanvasShader.hpp" />
     <ClInclude Include="Source\Internal\Graphics\MeshData.hpp" />
@@ -71,6 +74,7 @@
     <ClInclude Include="Source\Internal\Graphics\MeshList.hpp" />
     <ClInclude Include="Source\Internal\Graphics\ShaderBase.hpp" />
     <ClInclude Include="Source\Internal\Graphics\WorldShader.hpp" />
+    <ClInclude Include="Source\Internal\Physics\Simplex.hpp" />
     <ClInclude Include="Source\Internal\Utilities\TransformUtilities.hpp" />
   </ItemGroup>
   <ItemGroup>
