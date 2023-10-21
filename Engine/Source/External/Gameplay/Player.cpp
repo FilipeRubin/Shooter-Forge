@@ -68,7 +68,7 @@ inline void Player::ProcessMovement()
 
 	direction.Normalize();
 
-	float speed = Keyboard::Pressed(Key::LEFT_SHIFT) ? 25.0f : 12.0f;
+	float speed = Keyboard::Pressed(Key::LEFT_SHIFT) ? 10.0f : 5.0f;
 
 	m_velocity = m_velocity.Lerp(direction * speed, Time::GetDeltaTime() * 10.0f);
 

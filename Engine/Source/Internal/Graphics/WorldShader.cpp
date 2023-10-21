@@ -64,6 +64,7 @@ void WorldShader::Load(const char* vertexShaderSource, const char* fragmentShade
 	glUseProgram(m_program);
 	glUniform1i(glGetUniformLocation(m_program, "u_textures.diffuse"), 0);
 	glUniform1i(glGetUniformLocation(m_program, "u_textures.specular"), 1);
+	glUniform1i(glGetUniformLocation(m_program, "u_textures.emission"), 2);
 
 	m_uCameraPosition = glGetUniformLocation(m_program, "u_cameraPosition");
 	m_uProjView = glGetUniformLocation(m_program, "u_projView");
@@ -104,18 +105,20 @@ void WorldShader::SetMaterial(const Material& material)
 {
 	const GLint enableDiffuse = material.IsDiffuseTextureEnabled();
 	const GLint enableSpecular = material.IsSpecularTextureEnabled();
-	//glm::vec3 diffuseColor = glm::vec3(material.diffuseColor.x, material.diffuseColor.y, material.diffuseColor.z);
-	//glm::vec3 specularColor = glm::vec3(material.diffuseColor)
+	const GLint enableEmission = material.IsEmissionTextureEnabled();
 
 	const Vector3& diffuseColor = material.diffuseColor;
 	const Vector3& specularColor = material.specularColor;
+	const Vector3& emissionColor = material.emissionColor;
 
 	glBindBuffer(GL_UNIFORM_BUFFER, s_uboMaterial);
 	glBufferSubData(GL_UNIFORM_BUFFER,  0,  4U, &enableDiffuse);
 	glBufferSubData(GL_UNIFORM_BUFFER,  4,  4U, &enableSpecular);
+	glBufferSubData(GL_UNIFORM_BUFFER,  8,  4U, &enableEmission);
 	glBufferSubData(GL_UNIFORM_BUFFER, 16, 12U, &diffuseColor);
 	glBufferSubData(GL_UNIFORM_BUFFER, 32, 12U, &specularColor);
-	if (enableDiffuse)
+	glBufferSubData(GL_UNIFORM_BUFFER, 48, 12U, &emissionColor);
+	if (enableDiffuse | enableSpecular | enableEmission)
 	{
 		material.UseTextures();
 	}
@@ -135,7 +138,7 @@ void WorldShader::InitUniformBuffers()
 
 	glGenBuffers(1, &s_uboMaterial);
 	glBindBuffer(GL_UNIFORM_BUFFER, s_uboMaterial);
-	glBufferData(GL_UNIFORM_BUFFER, 48U, nullptr, GL_STATIC_DRAW);
+	glBufferData(GL_UNIFORM_BUFFER, 64U, nullptr, GL_STATIC_DRAW);
 	glBindBufferBase(GL_UNIFORM_BUFFER, 1U, s_uboMaterial);
 }
 

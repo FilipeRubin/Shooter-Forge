@@ -29,7 +29,7 @@ void main()
 	gl_Position = u_projView * u_model * vec4(v_in_pos, 1.0);
 
 	v_out_pos = vec3(u_model * vec4(v_in_pos, 1.0));
-	v_out_nor = normalize(mat3(transpose(inverse(u_model))) * v_in_nor);
+	v_out_nor = mat3(transpose(inverse(u_model))) * v_in_nor;
 	v_out_uv = v_in_uv;
 }
 )";
@@ -56,27 +56,33 @@ layout(std140) uniform ubo_material
 {
 	bool u_diffuseEnabled;
 	bool u_specularEnabled;
+	bool u_emissionEnabled;
 	vec3 u_diffuseColor;
 	vec3 u_specularColor;
+	vec3 u_emissionColor;
 };
 
 uniform struct Textures
 {
 	sampler2D diffuse;
 	sampler2D specular;
+	sampler2D emission;
 } u_textures;
 
-vec3 CalculateSpecular(vec3 specularColor)
+vec3 CalculateSpecular(vec3 specularColor, vec3 normal)
 {
 	vec3 viewDirection = normalize(u_cameraPosition - v_out_pos);
-	vec3 reflectDirection = reflect(-u_directionalDirection, v_out_nor);
-	float specularAmount = pow(max(dot(viewDirection, reflectDirection), 0.0), 8);
+	vec3 reflectDirection = reflect(-u_directionalDirection, normal);
+	float specularAmount = pow(max(dot(viewDirection, reflectDirection), 0.0), 16);
 	vec3 specularFrag = specularColor * specularAmount / 2.0;
 	return specularFrag;
 }
 
 void main()
 {
+	// Pre-calculations
+	vec3 normalizedNormal = normalize(v_out_nor);
+
 	// Diffuse fragment
 	vec3 diffuseFrag;
 	if (u_diffuseEnabled)
@@ -91,12 +97,18 @@ void main()
 	frag = u_directionalAmbient * diffuseFrag;
 
 	// Diffuse lighting
-	frag += max(0.0, dot(u_directionalDirection, v_out_nor)) * u_directionalColor * diffuseFrag;
+	frag += max(0.0, dot(u_directionalDirection, normalizedNormal)) * u_directionalColor * diffuseFrag;
 
 	if (u_specularEnabled)
-		frag += CalculateSpecular(texture(u_textures.specular, v_out_uv).rgb * u_specularColor);
+		frag += CalculateSpecular(texture(u_textures.specular, v_out_uv).rgb * u_specularColor, normalizedNormal);
 	else
-		frag += CalculateSpecular(u_specularColor);
+		frag += CalculateSpecular(u_specularColor, normalizedNormal);
+
+	// Emission
+	if (u_emissionEnabled)
+		frag += texture(u_textures.emission, v_out_uv).rgb * u_emissionColor;
+	else
+		frag += u_emissionColor;
 
 	// Final
 	f_color = vec4(frag, 1.0);
