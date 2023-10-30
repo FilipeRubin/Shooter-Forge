@@ -9,6 +9,16 @@ using namespace Engine::Physics;
 using namespace Engine::Utilities;
 using namespace std;
 
+Collider::Collider()
+	:m_pointsArray(nullptr), m_pointsArraySize(0U)
+{
+}
+
+Collider::~Collider()
+{
+	delete[] m_pointsArray;
+}
+
 bool Collider::IsIntersecting(const Collider& other) const
 {
 	Simplex simplex;
@@ -33,14 +43,20 @@ bool Collider::IsIntersecting(const Collider& other) const
 	return false;
 }
 
+void Collider::SetPointsArrayPointer(const Utilities::Vector3*&& pointsArray, size_t pointsArraySize)
+{
+	m_pointsArray = pointsArray;
+	m_pointsArraySize = pointsArraySize;
+}
+
 Vector3 Collider::FarthestPointInDirection(const Utilities::Vector3& direction) const
 {
 	Vector3 farthestPoint;
 	float farthestDirection = -FLT_MAX;
-	for (const Vector3& point : points)
+	for (size_t i = 0; i < m_pointsArraySize; i++)
 	{
 		glm::mat4 transformationMatrix = TransformUtilities::GenWorldHierarchyMatrix(transform);
-		glm::vec3 transformedVertex = glm::vec3(transformationMatrix * glm::vec4(TO_GLM_VEC3(point), 1.0f));
+		glm::vec3 transformedVertex = glm::vec3(transformationMatrix * glm::vec4(TO_GLM_VEC3(m_pointsArray[i]), 1.0f));
 		const Vector3& transformedConvertedVertex = FROM_GLM_VEC3(transformedVertex);
 
 		float pointDot = transformedConvertedVertex.Dot(direction);

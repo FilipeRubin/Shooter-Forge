@@ -10,9 +10,13 @@ namespace Engine::Physics
 	{
 	public:
 		Utilities::Transform transform;
-		std::vector<Utilities::Vector3> points;
+		Collider();
+		~Collider();
 		bool IsIntersecting(const Collider& other) const;
+		void SetPointsArrayPointer(const Utilities::Vector3*&& pointsArray, size_t pointsArraySize);
 	private:
+		const Utilities::Vector3* m_pointsArray;
+		size_t m_pointsArraySize;
 		Utilities::Vector3 FarthestPointInDirection(const Utilities::Vector3& direction) const;
 		bool NextSimplex(Simplex& simplex, Utilities::Vector3& direction) const;
 		bool SameDirection(const Utilities::Vector3& a, const Utilities::Vector3& b) const;
