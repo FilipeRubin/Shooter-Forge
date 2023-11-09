@@ -10,6 +10,7 @@ namespace Engine::Physics
 		void Clear();
 		void PushFront(const Utilities::Vector3& point);
 		size_t GetSize() const;
+		void ToVector3Array(Utilities::Vector3 (&result)[4]) const;
 		Utilities::Vector3& operator[](size_t index);
 	private:
 		Utilities::Vector3 m_points[4];

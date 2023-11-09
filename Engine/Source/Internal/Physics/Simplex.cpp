@@ -29,6 +29,11 @@ size_t Simplex::GetSize() const
 	return m_size;
 }
 
+void Simplex::ToVector3Array(Vector3(&result)[4]) const
+{
+	memcpy(result, m_points, sizeof(Vector3) * 4);
+}
+
 Vector3& Simplex::operator[](size_t index)
 {
 	return m_points[index];

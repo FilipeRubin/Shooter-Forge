@@ -1,5 +1,6 @@
 #include "Collider.hpp"
 #include "Physics/Simplex.hpp"
+#include "Physics/ColliderLoader.hpp"
 #include "Utilities/TransformUtilities.hpp"
 
 #define TO_GLM_VEC3(x) (*((glm::vec3*)&x))
@@ -23,15 +24,13 @@ bool Collider::IsIntersecting(const Collider& other) const
 {
 	Simplex simplex;
 	Vector3 direction = Vector3(0.0f, 1.0f, 0.0f);
-	Vector3 supportPoint = FarthestPointInDirection(direction) -
-					 other.FarthestPointInDirection(-direction);
+	Vector3 supportPoint = Support(other, direction);
 	simplex.PushFront(supportPoint);
 	direction = -supportPoint;
 
 	while (true)
 	{
-		supportPoint = FarthestPointInDirection(direction) -
-				 other.FarthestPointInDirection(-direction);
+		supportPoint = Support(other, direction);
 		if (supportPoint.Dot(direction) <= 0.0f)
 			return false;
 		simplex.PushFront(supportPoint);
@@ -40,13 +39,16 @@ bool Collider::IsIntersecting(const Collider& other) const
 			return true;
 	}
 
+	//EPA(simplex, other);
+
 	return false;
 }
 
-void Collider::SetPointsArrayPointer(const Utilities::Vector3*&& pointsArray, size_t pointsArraySize)
+void Collider::Load(const char* filePath)
 {
-	m_pointsArray = pointsArray;
-	m_pointsArraySize = pointsArraySize;
+	delete[] m_pointsArray;
+
+	ColliderLoader::LoadFromFile(filePath, m_pointsArray, m_pointsArraySize);
 }
 
 Vector3 Collider::FarthestPointInDirection(const Utilities::Vector3& direction) const
@@ -67,6 +69,11 @@ Vector3 Collider::FarthestPointInDirection(const Utilities::Vector3& direction) 
 		}
 	}
 	return farthestPoint;
+}
+
+Vector3 Collider::Support(const Collider& other, const Vector3& direction) const
+{
+	return FarthestPointInDirection(direction) - other.FarthestPointInDirection(-direction);
 }
 
 bool Collider::NextSimplex(Simplex& simplex, Vector3& direction) const
@@ -213,3 +220,16 @@ bool Collider::TetrahedronCase(Simplex& simplex, Vector3& direction) const
 
 	return true;
 }
+
+/*CollisionPoints Collider::EPA(const Simplex& simplex, const Collider& other)
+{
+	Vector3 polytope[4];
+	simplex.ToVector3Array(polytope);
+	size_t faces[12]
+	{
+		0, 1, 2,
+		0, 3, 1,
+		0, 2, 3,
+		1, 3, 2
+	};
+}*/
