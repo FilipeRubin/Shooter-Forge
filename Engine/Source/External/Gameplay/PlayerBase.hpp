@@ -10,20 +10,16 @@ namespace Engine::Gameplay
 {
 	class PlayerBase
 	{
-	private:
 		friend class Scene::SceneManagement;
-		static PlayerBase* s_activePlayer;
 	public:
 		static void SetActivePlayer(PlayerBase* pPlayer = nullptr);
-	private:
-		bool m_initialized;
-	public:
 		Utilities::Transform transform;
-	private:
-		virtual void Init();
-		virtual void Process();
-	public:
 		PlayerBase();
 		virtual ~PlayerBase();
+	private:
+		static PlayerBase* s_activePlayer;
+		bool m_initialized;
+		virtual void Init();
+		virtual void Process();
 	};
 }

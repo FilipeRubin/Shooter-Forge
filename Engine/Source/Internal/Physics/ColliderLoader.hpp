@@ -1,3 +1,5 @@
+#pragma once
+
 namespace Engine::Utilities
 {
 	struct Vector3;
