@@ -32,6 +32,7 @@
     <ClCompile Include="Source\Internal\Graphics\ShaderBase.cpp" />
     <ClCompile Include="Source\Internal\Graphics\WorldShader.cpp" />
     <ClCompile Include="Source\Internal\Physics\ColliderLoader.cpp" />
+    <ClCompile Include="Source\External\Physics\CollisionGroup.cpp" />
     <ClCompile Include="Source\Internal\Physics\Simplex.cpp" />
     <ClCompile Include="Source\Internal\Utilities\TransformUtilities.cpp" />
     <ClInclude Include="Source\External\Gameplay\PlayerBase.hpp" />
@@ -76,6 +77,7 @@
     <ClInclude Include="Source\Internal\Graphics\ShaderBase.hpp" />
     <ClInclude Include="Source\Internal\Graphics\WorldShader.hpp" />
     <ClInclude Include="Source\Internal\Physics\ColliderLoader.hpp" />
+    <ClInclude Include="Source\External\Physics\CollisionGroup.hpp" />
     <ClInclude Include="Source\Internal\Physics\Simplex.hpp" />
     <ClInclude Include="Source\Internal\Utilities\TransformUtilities.hpp" />
   </ItemGroup>

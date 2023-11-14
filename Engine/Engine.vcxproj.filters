@@ -108,6 +108,9 @@
     <ClCompile Include="Source\Internal\Physics\ColliderLoader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\External\Physics\CollisionGroup.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\External\Core.hpp">
@@ -205,6 +208,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Internal\Physics\ColliderLoader.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\External\Physics\CollisionGroup.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
