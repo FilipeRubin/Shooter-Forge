@@ -67,6 +67,7 @@ void MeshList::ExpandArray()
 	size_t newSize = m_arraySize * 2U; // Double the capacity
 	Mesh** newArray = new Mesh*[newSize];
 	memcpy(newArray, m_array, sizeof(Mesh*) * m_arraySize);
+	memset(newArray + m_arraySize, (int)nullptr, sizeof(Mesh*) * m_arraySize);
 	delete[] m_array;
 	m_array = newArray;
 	m_arraySize = newSize;
