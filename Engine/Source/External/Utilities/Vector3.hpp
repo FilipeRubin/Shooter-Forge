@@ -16,7 +16,6 @@ namespace Engine::Utilities
 
 		// Operators
 		bool operator==(const Vector3& other);
-		//bool operator!=(const Vector3& other);
 		void operator+=(const Vector3& other);
 		void operator*=(const float& value);
 	};

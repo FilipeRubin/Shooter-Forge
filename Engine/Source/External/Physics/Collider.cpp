@@ -39,8 +39,6 @@ bool Collider::IsIntersecting(const Collider& other) const
 			return true;
 	}
 
-	//EPA(simplex, other);
-
 	return false;
 }
 
@@ -220,16 +218,3 @@ bool Collider::TetrahedronCase(Simplex& simplex, Vector3& direction) const
 
 	return true;
 }
-
-/*CollisionPoints Collider::EPA(const Simplex& simplex, const Collider& other)
-{
-	Vector3 polytope[4];
-	simplex.ToVector3Array(polytope);
-	size_t faces[12]
-	{
-		0, 1, 2,
-		0, 3, 1,
-		0, 2, 3,
-		1, 3, 2
-	};
-}*/

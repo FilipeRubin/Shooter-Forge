@@ -4,7 +4,7 @@
 using namespace Engine::Physics;
 
 CollisionGroup::CollisionGroup()
-	:m_colliderArray(new Collider*[5]), m_colliderArraySize(5U)
+	:m_colliderArray(new Collider*[5]{nullptr}), m_colliderArraySize(5U)
 {
 }
 

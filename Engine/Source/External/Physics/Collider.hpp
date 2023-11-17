@@ -25,6 +25,5 @@ namespace Engine::Physics
 		bool LineCase(Simplex& simplex, Utilities::Vector3& direction) const;
 		bool TriangleCase(Simplex& simplex, Utilities::Vector3& direction) const;
 		bool TetrahedronCase(Simplex& simplex, Utilities::Vector3& direction) const;
-		//CollisionPoints EPA(const Simplex& simplex, const Collider& other);
 	};
 }

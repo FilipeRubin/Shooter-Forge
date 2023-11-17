@@ -10,14 +10,13 @@ Simplex::Simplex()
 
 void Simplex::Clear()
 {
-	memset(m_points, 0, sizeof(m_points));
-
 	m_size = 0U;
 }
 
 void Simplex::PushFront(const Vector3& point)
 {
-	memcpy(&(m_points[1]), m_points, sizeof(m_points[0]) * 3);
+	memmove(&(m_points[1]), m_points, sizeof(m_points[0]) * 3);
+
 	m_points[0] = point;
 
 	if (m_size < 4)

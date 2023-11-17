@@ -95,14 +95,6 @@ bool Vector3::operator==(const Vector3& other)
 		other.z == z;
 }
 
-/*bool Vector3::operator!=(const Vector3& other)
-{
-	return
-		other.x != x or
-		other.y != y or
-		other.z != z;
-}*/
-
 void Vector3::operator+=(const Vector3& other)
 {
 	x += other.x;
