@@ -15,17 +15,25 @@ CollisionGroup::~CollisionGroup()
 
 void CollisionGroup::AddCollider(Collider* pCollider)
 {
+	bool foundSlot = false;
+
 	for (size_t i = 0; i < m_colliderArraySize; i++)
 	{
 		if (m_colliderArray[i] == nullptr)
 		{
 			m_colliderArray[i] = pCollider;
+			foundSlot = true;
 			return;
 		}
 	}
 
 	// If no free place was found
-	ExpandArray();
+	if (!foundSlot)
+	{
+		int slotIndex = m_colliderArraySize;
+		ExpandArray();
+		m_colliderArray[slotIndex] = pCollider;
+	}
 }
 
 void CollisionGroup::RemoveCollider(Collider* pCollider)

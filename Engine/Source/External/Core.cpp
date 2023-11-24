@@ -144,6 +144,8 @@ void Engine::Core::Start(Scene::SceneBase*&& pFirstScene)
 
 		Input::Mouse::SetPos(s_mousePos);
 
+		if (Scene::SceneManagement::HasNextScene())
+			Scene::SceneManagement::LoadNextScene();
 		Scene::SceneManagement::Render();
 		
 		Graphics::Renderer::RenderAll();
