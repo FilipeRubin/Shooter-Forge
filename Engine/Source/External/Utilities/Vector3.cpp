@@ -19,6 +19,11 @@ Vector3 Vector3::Cross(const Vector3& other) const
 	return Vector3(resultX, resultY, resultZ);
 }
 
+float Vector3::DistanceTo(const Vector3& other) const
+{
+	return (other - *this).Magnitude();
+}
+
 float Vector3::Dot(const Vector3& other) const
 {
 	return x * other.x + y * other.y + z * other.z;

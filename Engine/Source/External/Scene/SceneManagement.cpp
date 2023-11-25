@@ -1,8 +1,11 @@
 #include "Scene/SceneManagement.hpp"
 #include "Gameplay/PlayerBase.hpp"
+#include "Input/Keyboard.hpp"
 
 using namespace Engine::Gameplay;
 using namespace Engine::Scene;
+
+bool g_usingSphericalDetection = true;
 
 SceneManagement SceneManagement::s_instance = SceneManagement();
 
@@ -39,6 +42,8 @@ void SceneManagement::Render()
 		{
 			PlayerBase::s_activePlayer->Process();
 		}
+		if (Input::Keyboard::JustPressed(Input::Key::L))
+			g_usingSphericalDetection = !g_usingSphericalDetection;
 		s_instance.m_pCurrentScene->Render();
 	}
 }

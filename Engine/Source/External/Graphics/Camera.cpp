@@ -1,4 +1,5 @@
 #include "Camera.hpp"
+#include "Graphics/Renderer.hpp"
 
 using namespace Engine::Graphics;
 
@@ -6,11 +7,12 @@ Camera Camera::defaultCamera = Camera();
 Camera* Camera::pCurrentCamera = &defaultCamera;
 
 Camera::Camera() :
-	aspect(1.333f),
+	aspect(1.0f),
 	near(0.1f),
 	far(100.0f),
 	fov(65.0f)
 {
+	aspect = Renderer::windowSize.x / Renderer::windowSize.y;
 	if (pCurrentCamera == &defaultCamera)
 	{
 		pCurrentCamera = this;

@@ -2,6 +2,8 @@
 #include "Physics/Simplex.hpp"
 #include "Physics/ColliderLoader.hpp"
 #include "Utilities/TransformUtilities.hpp"
+#include "Input/Keyboard.hpp"
+#include <iostream>
 
 #define TO_GLM_VEC3(x) (*((glm::vec3*)&x))
 #define FROM_GLM_VEC3(x) (*((Utilities::Vector3*)&x))
@@ -10,8 +12,15 @@ using namespace Engine::Physics;
 using namespace Engine::Utilities;
 using namespace std;
 
+extern bool g_usingSphericalDetection;
+
 Collider::Collider()
-	:m_pointsArray(nullptr), m_pointsArraySize(0U)
+	:m_pointsArray(nullptr),
+	m_pointsArraySize(0U),
+	m_minBoundingBox(Vector3(FLT_MAX, FLT_MAX, FLT_MAX)),
+	m_maxBoundingBox(Vector3(-FLT_MAX, -FLT_MAX, -FLT_MAX)),
+	m_radius(0.0f),
+	m_lastDirection(Vector3(0.0f, 1.0f, 0.0f))
 {
 }
 
@@ -22,8 +31,19 @@ Collider::~Collider()
 
 bool Collider::IsIntersecting(const Collider& other) const
 {
+	if (g_usingSphericalDetection)
+	{
+		if (!HasSphericalIntersection(other))
+			return false;
+	}
+	else
+	{
+		if (!HasAABBIntersection(other))
+			return false;
+	}
+
 	Simplex simplex;
-	Vector3 direction = Vector3(0.0f, 1.0f, 0.0f);
+	Vector3 direction = m_lastDirection;
 	Vector3 supportPoint = Support(other, direction);
 	simplex.PushFront(supportPoint);
 	direction = -supportPoint;
@@ -32,13 +52,20 @@ bool Collider::IsIntersecting(const Collider& other) const
 	{
 		supportPoint = Support(other, direction);
 		if (supportPoint.Dot(direction) <= 0.0f)
+		{
+			m_lastDirection = direction;
 			return false;
+		}
 		simplex.PushFront(supportPoint);
 
 		if (NextSimplex(simplex, direction))
+		{
+			m_lastDirection = direction;
 			return true;
+		}
 	}
 
+	m_lastDirection = direction;
 	return false;
 }
 
@@ -47,6 +74,39 @@ void Collider::Load(const char* filePath)
 	delete[] m_pointsArray;
 
 	ColliderLoader::LoadFromFile(filePath, m_pointsArray, m_pointsArraySize);
+
+	for (size_t i = 0; i < m_pointsArraySize; i++)
+	{
+		if (m_pointsArray[i].x < m_minBoundingBox.x) m_minBoundingBox.x = m_pointsArray[i].x;
+		if (m_pointsArray[i].y < m_minBoundingBox.y) m_minBoundingBox.y = m_pointsArray[i].y;
+		if (m_pointsArray[i].z < m_minBoundingBox.z) m_minBoundingBox.z = m_pointsArray[i].z;
+
+		if (m_pointsArray[i].x > m_maxBoundingBox.x) m_maxBoundingBox.x = m_pointsArray[i].x;
+		if (m_pointsArray[i].y > m_maxBoundingBox.y) m_maxBoundingBox.y = m_pointsArray[i].y;
+		if (m_pointsArray[i].z > m_maxBoundingBox.z) m_maxBoundingBox.z = m_pointsArray[i].z;
+		
+		float pointRadius = m_pointsArray[i].Magnitude();
+		if (pointRadius > m_radius)
+			m_radius = pointRadius;
+	}
+}
+
+bool Collider::HasAABBIntersection(const Collider& other) const
+{
+	const Vector3& thisMin = transform.GetWorldPosition() + m_minBoundingBox;
+	const Vector3& thisMax = transform.GetWorldPosition() + m_maxBoundingBox;
+	const Vector3& otherMin = other.transform.GetWorldPosition() + other.m_minBoundingBox;
+	const Vector3& otherMax = other.transform.GetWorldPosition() + other.m_maxBoundingBox;
+	
+	return
+		(thisMin.x < otherMax.x and thisMax.x > otherMin.x) and
+		(thisMin.y < otherMax.y and thisMax.y > otherMin.y) and
+		(thisMin.z < otherMax.z and thisMax.z > otherMin.z);
+}
+
+bool Collider::HasSphericalIntersection(const Collider& other) const
+{
+	return transform.GetWorldPosition().DistanceTo(other.transform.GetWorldPosition()) < (m_radius + other.m_radius);
 }
 
 Vector3 Collider::FarthestPointInDirection(const Utilities::Vector3& direction) const

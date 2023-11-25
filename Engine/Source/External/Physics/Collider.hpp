@@ -18,6 +18,13 @@ namespace Engine::Physics
 	private:
 		const Utilities::Vector3* m_pointsArray;
 		size_t m_pointsArraySize;
+		Utilities::Vector3 m_minBoundingBox;
+		Utilities::Vector3 m_maxBoundingBox;
+		float m_radius;
+		mutable Utilities::Vector3 m_lastDirection;
+
+		bool HasAABBIntersection(const Collider& other) const;
+		bool HasSphericalIntersection(const Collider& other) const;
 		Utilities::Vector3 FarthestPointInDirection(const Utilities::Vector3& direction) const;
 		Utilities::Vector3 Support(const Collider& other, const Utilities::Vector3& direction) const;
 		bool NextSimplex(Simplex& simplex, Utilities::Vector3& direction) const;
