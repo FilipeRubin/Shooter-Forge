@@ -83,7 +83,7 @@ bool Engine::Core::Init(Parameters params)
 {
 	if (!glfwInit())
 		return false;
-	s_pWindow = glfwCreateWindow(params.windowWidth, params.windowHeight, params.applicationName, nullptr, nullptr);
+	s_pWindow = glfwCreateWindow(params.windowWidth, params.windowHeight, params.windowTitle, nullptr, nullptr);
 
 	if (s_pWindow == nullptr)
 	{
@@ -174,4 +174,10 @@ void Engine::Core::Start(Scene::SceneBase*&& pFirstScene)
 
 	glfwDestroyWindow(s_pWindow);
 	glfwTerminate();
+}
+
+void Engine::Core::SetWindowTitle(const char* title)
+{
+	if (s_pWindow)
+		glfwSetWindowTitle(s_pWindow, title);
 }

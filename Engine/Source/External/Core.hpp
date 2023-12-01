@@ -15,7 +15,7 @@ namespace Engine
 	public:
 		struct Parameters
 		{
-			const char* applicationName = "Game"; // The title of the game's window.
+			const char* windowTitle = "Game"; // The title of the game's window.
 			int windowWidth = 800; // The width of the game's window, in pixels.
 			int windowHeight = 600; // The height of the game's window, in pixels.
 			bool vsync = true; // If true, it'll lock the max framerate to the screen's refresh rate.
@@ -35,5 +35,6 @@ namespace Engine
 	public:
 		static bool Init(Parameters params = Parameters());
 		static void Start(Scene::SceneBase*&& pFirstScene);
+		static void SetWindowTitle(const char* title);
 	};
 }

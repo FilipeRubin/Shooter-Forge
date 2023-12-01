@@ -17,5 +17,7 @@ namespace Engine::Graphics
 		void Use() override;
 	private:
 		Utilities::Vector2 m_lastScreenSize;
+		Utilities::Vector2 m_uPosition;
+		float m_uRotation;
 	};
 }

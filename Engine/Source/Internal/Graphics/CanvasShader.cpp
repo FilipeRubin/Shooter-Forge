@@ -7,7 +7,9 @@ using namespace Engine::Utilities;
 
 CanvasShader::CanvasShader() :
 	ShaderBase(),
-	m_lastScreenSize(Vector2())
+	m_lastScreenSize(Vector2()),
+	m_uPosition(Vector2()),
+	m_uRotation(0.0f)
 {
 }
 
