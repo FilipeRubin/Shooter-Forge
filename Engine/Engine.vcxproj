@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="Source\External\Gameplay\Player.cpp" />
     <ClCompile Include="Source\External\Graphics\DirectionalLight.cpp" />
+    <ClCompile Include="Source\External\Graphics\Sprite.cpp" />
     <ClCompile Include="Source\External\Physics\Collider.cpp" />
     <ClCompile Include="Source\Internal\Graphics\ShaderLoader.cpp" />
     <ClCompile Include="Source\External\Graphics\Material.cpp" />
@@ -30,6 +31,7 @@
     <ClCompile Include="Source\Internal\Graphics\MeshLoader.cpp" />
     <ClCompile Include="Source\Internal\Graphics\MeshList.cpp" />
     <ClCompile Include="Source\Internal\Graphics\ShaderBase.cpp" />
+    <ClCompile Include="Source\Internal\Graphics\SpriteList.cpp" />
     <ClCompile Include="Source\Internal\Graphics\SpriteRenderer.cpp" />
     <ClCompile Include="Source\Internal\Graphics\WorldShader.cpp" />
     <ClCompile Include="Source\Internal\Physics\ColliderLoader.cpp" />
@@ -44,7 +46,7 @@
     <ClInclude Include="Source\External\Graphics\Texture.hpp" />
     <ClInclude Include="Source\External\Input\Keyboard.hpp" />
     <ClInclude Include="Source\External\Physics\Collider.hpp" />
-    <ClInclude Include="Source\External\Graphics\ScreenSprite.hpp" />
+    <ClInclude Include="Source\External\Graphics\Sprite.hpp" />
     <ClInclude Include="Source\Internal\Graphics\ShaderLoader.hpp" />
     <ClInclude Include="Source\Internal\Graphics\CanvasShader.hpp" />
     <ClInclude Include="Source\Internal\Graphics\MeshData.hpp" />
@@ -77,6 +79,7 @@
     <ClInclude Include="Source\Internal\Graphics\MeshLoader.hpp" />
     <ClInclude Include="Source\Internal\Graphics\MeshList.hpp" />
     <ClInclude Include="Source\Internal\Graphics\ShaderBase.hpp" />
+    <ClInclude Include="Source\Internal\Graphics\SpriteList.hpp" />
     <ClInclude Include="Source\Internal\Graphics\SpriteRenderer.hpp" />
     <ClInclude Include="Source\Internal\Graphics\WorldShader.hpp" />
     <ClInclude Include="Source\Internal\Physics\ColliderLoader.hpp" />

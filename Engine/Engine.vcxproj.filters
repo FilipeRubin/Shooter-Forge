@@ -114,6 +114,12 @@
     <ClCompile Include="Source\Internal\Graphics\SpriteRenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Internal\Graphics\SpriteList.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\External\Graphics\Sprite.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\External\Core.hpp">
@@ -216,10 +222,13 @@
     <ClInclude Include="Source\External\Physics\CollisionGroup.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\External\Graphics\ScreenSprite.hpp">
+    <ClInclude Include="Source\External\Graphics\Sprite.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Internal\Graphics\SpriteRenderer.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Internal\Graphics\SpriteList.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -7,6 +7,7 @@ using namespace Engine::Utilities;
 Vector2 Renderer::windowSize = Vector2();
 MeshList Renderer::s_dynamicMeshes = MeshList();
 MeshList Renderer::s_staticMeshes = MeshList();
+SpriteList Renderer::s_sprites = SpriteList();
 
 void Renderer::Init(size_t arraySize)
 {
@@ -183,11 +184,60 @@ void main()
 }
 )";
 
+	const char* vs_canvas = R"(
+#version 330 core
+
+layout(location = 0) in vec2 v_in_pos;
+
+out vec2 v_out_uv;
+
+uniform vec2 u_screenResolution;
+uniform vec2 u_screenAnchor;
+uniform vec2 u_size;
+uniform vec2 u_position;
+uniform mat3 u_rotation;
+
+void main()
+{
+	vec2 pixelSize = vec2(1.0) / u_screenResolution;
+
+	vec2 screenVertex = (v_in_pos * vec2(2.0)) - vec2(1.0);
+	vec2 sizedVertex = screenVertex * pixelSize * u_size;
+	vec2 rotatedVertex = vec2(u_rotation * vec3(sizedVertex, 1.0));
+	vec2 anchoredVertex = rotatedVertex + (u_screenAnchor - vec2(0.5)) * vec2(2.0);
+	vec2 positionedVertex = anchoredVertex + (u_position * pixelSize * vec2(2.0));
+
+	gl_Position = vec4(positionedVertex, 0.0, 1.0);
+	v_out_uv = v_in_pos;
+}
+)";
+
+	const char* fs_canvas = R"(
+#version 330 core
+
+in vec2 v_out_uv;
+
+out vec4 f_color;
+
+uniform sampler2D u_texture;
+
+void main()
+{
+	vec4 color = texture(u_texture, v_out_uv);
+	if (color.a == 0.0)
+	{
+		discard;
+	}
+	f_color = color;
+}
+)";
+
 	s_dynamicMeshes.Init(arraySize);
 	s_dynamicMeshes.shader.Load(vs_dynamic, fs_dynamic);
 	s_staticMeshes.Init(arraySize);
 	s_staticMeshes.shader.Load(vs_static, fs_static);
-
+	s_sprites.Init(arraySize);
+	s_sprites.shader.Load(vs_canvas, fs_canvas);
 }
 
 void Renderer::RenderAll()
@@ -195,6 +245,8 @@ void Renderer::RenderAll()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	s_dynamicMeshes.RenderAll();
 	s_staticMeshes.RenderAll();
+	glClear(GL_DEPTH_BUFFER_BIT);
+	s_sprites.RenderAll();
 }
 
 unsigned int Renderer::AddMesh(bool isDynamic, Mesh* pMesh)
@@ -219,4 +271,14 @@ void Renderer::RemoveMesh(bool isDynamic, unsigned int index)
 		s_dynamicMeshes.RemoveMesh(index);
 	else
 		s_staticMeshes.RemoveMesh(index);
+}
+
+unsigned int Renderer::AddSprite(Sprite* pSprite)
+{
+	return s_sprites.AddSprite(pSprite);
+}
+
+void Renderer::RemoveSprite(unsigned int index)
+{
+	s_sprites.RemoveSprite(index);
 }

@@ -6,7 +6,7 @@
 #include "Graphics/Camera.hpp"
 #include "Graphics/Mesh.hpp"
 #include "Graphics/Renderer.hpp"
-//#include "Graphics/Sprite.hpp"
+#include "Graphics/Sprite.hpp"
 #include "Input/Keyboard.hpp"
 #include "Input/Mouse.hpp"
 #include "Utilities/Time.hpp"
@@ -113,6 +113,7 @@ bool Engine::Core::Init(Parameters params)
 	Graphics::Renderer::windowSize.x = (float)params.windowWidth;
 	Graphics::Renderer::windowSize.y = (float)params.windowHeight;
 	Graphics::Renderer::Init(params.defaultArraySize);
+	Graphics::Sprite::Init();
 	Input::Keyboard::Init();
 	Input::Mouse::Init(Utilities::Vector2((float)params.windowWidth / 2.0f, (float)params.windowHeight / 2.0f));
 
@@ -171,6 +172,7 @@ void Engine::Core::Start(Scene::SceneBase*&& pFirstScene)
 
 	// Cleanup
 	Scene::SceneManagement::Cleanup();
+	Graphics::Sprite::Cleanup();
 
 	glfwDestroyWindow(s_pWindow);
 	glfwTerminate();

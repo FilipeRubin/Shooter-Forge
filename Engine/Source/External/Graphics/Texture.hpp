@@ -9,6 +9,7 @@ namespace Engine::Graphics
 	class Texture
 	{
 		friend class Material;
+		friend class CanvasShader;
 	public:
 		Texture();
 		Texture(const Texture& other);

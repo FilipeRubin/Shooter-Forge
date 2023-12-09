@@ -4,8 +4,9 @@
 
 using namespace Engine::Graphics;
 
-MeshList::MeshList()
-	:m_array(nullptr), m_arraySize(0U)
+MeshList::MeshList() :
+	m_array(nullptr),
+	m_arraySize(0U)
 {
 }
 

@@ -2,6 +2,7 @@
 
 #include "ShaderBase.hpp"
 #include "Utilities/Vector2.hpp"
+#include "Utilities/Vector3.hpp"
 
 // class CanvasShader
 //
@@ -9,15 +10,23 @@
 
 namespace Engine::Graphics
 {
+	class Texture;
 	class CanvasShader : public ShaderBase
 	{
 	public:
 		CanvasShader();
 		void Load(const char* vertexShaderSource, const char* fragmentShaderSource) override;
 		void Use() override;
+		void SetTexture(const Texture& texture) const;
+		void SetScreenAnchor(const Utilities::Vector2& screenAnchor) const;
+		void SetSize(const Utilities::Vector2& size) const;
+		void SetPosition(const Utilities::Vector2& position) const;
+		void SetRotation(const float& rotation) const;
 	private:
-		Utilities::Vector2 m_lastScreenSize;
-		Utilities::Vector2 m_uPosition;
-		float m_uRotation;
+		GLint m_uScreenResolution;
+		GLint m_uScreenAnchor;
+		GLint m_uSize;
+		GLint m_uPosition;
+		GLint m_uRotation;
 	};
 }
