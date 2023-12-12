@@ -3,6 +3,11 @@
 #include "Utilities/Vector3.hpp"
 #include "Utilities/Transform.hpp"
 
+namespace Engine::Graphics
+{
+	class Mesh;
+}
+
 namespace Engine::Physics
 {
 	class Simplex;
@@ -10,6 +15,8 @@ namespace Engine::Physics
 	class Collider
 	{
 	public:
+		Graphics::Mesh* pMesh;
+		bool enabled;
 		Utilities::Transform transform;
 		Collider();
 		~Collider();

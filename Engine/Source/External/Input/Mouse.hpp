@@ -29,7 +29,7 @@ namespace Engine::Input
 		static bool GetLockMouse();
 		static Utilities::Vector2 GetMouseMovement();
 		static bool Pressed(MouseButton button);
-		static bool JustPressed(int button);
-		static bool JustReleased(int button);
+		static bool JustPressed(MouseButton button);
+		static bool JustReleased(MouseButton button);
 	};
 }

@@ -14,8 +14,10 @@ using namespace std;
 
 extern bool g_usingSphericalDetection;
 
-Collider::Collider()
-	:m_pointsArray(nullptr),
+Collider::Collider() :
+	pMesh(nullptr),
+	enabled(true),
+	m_pointsArray(nullptr),
 	m_pointsArraySize(0U),
 	m_minBoundingBox(Vector3(FLT_MAX, FLT_MAX, FLT_MAX)),
 	m_maxBoundingBox(Vector3(-FLT_MAX, -FLT_MAX, -FLT_MAX)),
@@ -31,6 +33,8 @@ Collider::~Collider()
 
 bool Collider::IsIntersecting(const Collider& other) const
 {
+	if (!enabled)
+		return false;
 	if (g_usingSphericalDetection)
 	{
 		if (!HasSphericalIntersection(other))

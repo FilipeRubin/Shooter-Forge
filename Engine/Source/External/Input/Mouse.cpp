@@ -58,12 +58,12 @@ bool Mouse::Pressed(MouseButton button)
 	return s_buttonState[(int)button];
 }
 
-bool Mouse::JustPressed(int button)
+bool Mouse::JustPressed(MouseButton button)
 {
-	return s_buttonState[button] == true and s_lastButtonState[button] == false;
+	return s_buttonState[(int)button] == true and s_lastButtonState[(int)button] == false;
 }
 
-bool Mouse::JustReleased(int button)
+bool Mouse::JustReleased(MouseButton button)
 {
-	return s_buttonState[button] == false and s_lastButtonState[button] == true;
+	return s_buttonState[(int)button] == false and s_lastButtonState[(int)button] == true;
 }

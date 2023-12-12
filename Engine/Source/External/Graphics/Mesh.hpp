@@ -19,6 +19,7 @@ namespace Engine::Graphics
 			bool isDynamic = true;
 		};
 
+		bool enabled;
 		Utilities::Transform transform;
 		Graphics::Material material;
 		Mesh();                                 // Constructor

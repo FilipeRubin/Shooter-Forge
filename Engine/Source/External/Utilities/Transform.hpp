@@ -13,5 +13,7 @@ namespace Engine::Utilities
 	
 		Transform();
 		Vector3 GetWorldPosition() const;
+		Vector3 GetForward() const;
+		Vector3 GetRight() const;
 	};
 }

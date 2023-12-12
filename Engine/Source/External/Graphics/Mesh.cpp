@@ -9,6 +9,7 @@ using namespace Engine::Graphics;
 using namespace Engine::Utilities;
 
 Mesh::Mesh() :
+	enabled(true),
 	m_isInArray(false),
 	m_arrayIndex(0U),
 	m_pRefCount(new unsigned int(1)),
@@ -17,6 +18,7 @@ Mesh::Mesh() :
 }
 
 Mesh::Mesh(const Mesh& other) :
+	enabled(true),
 	m_isInArray(false),
 	m_arrayIndex(0U),
 	m_pRefCount(other.m_pRefCount),
@@ -28,6 +30,7 @@ Mesh::Mesh(const Mesh& other) :
 }
 
 Mesh::Mesh(Mesh&& other) noexcept :
+	enabled(other.enabled),
 	m_isInArray(other.m_isInArray),
 	transform(other.transform),
 	m_arrayIndex(other.m_arrayIndex),
@@ -126,5 +129,7 @@ void Mesh::Load(const char* filePath, Parameters params)
 
 void Mesh::Render()
 {
+	if (!enabled)
+		return;
 	m_pData->Render();
 }

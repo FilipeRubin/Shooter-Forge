@@ -31,3 +31,18 @@ Vector3 Transform::GetWorldPosition() const
 	return result;
 }
 
+Vector3 Transform::GetForward() const
+{
+	const glm::mat4 inverted = TransformUtilities::GenWorldHierarchyMatrix(*this);
+	//const glm::mat4 inverted = glm::inverse(TransformUtilities::GenWorldHierarchyMatrix(*this));
+	const glm::vec3 forward = normalize(glm::vec3(inverted[2]));
+	return -FROM_GLM_VEC3(forward);
+}
+
+Vector3 Transform::GetRight() const
+{
+	const glm::mat4 inverted = TransformUtilities::GenWorldHierarchyMatrix(*this);
+	//const glm::mat4 inverted = glm::inverse(TransformUtilities::GenWorldHierarchyMatrix(*this));
+	const glm::vec3 right = normalize(glm::vec3(inverted[0]));
+	return FROM_GLM_VEC3(right);
+}
